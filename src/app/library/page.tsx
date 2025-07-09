@@ -221,10 +221,10 @@ function LibraryContent() {
   };
 
   return (
-    <div className="min-h-screen mt-10 bg-gray-950 text-white">
+    <div className="min-h-screen  bg-gray-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* Header */}
-        <div className="mb-12 text-center">
+        <div className="mb-12  text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight tracking-tight">
             Resource Library
           </h1>
