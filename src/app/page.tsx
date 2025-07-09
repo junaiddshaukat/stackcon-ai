@@ -8,15 +8,18 @@ import { Search, Sparkles, Zap, Code, Palette, Database, ArrowRight, TrendingUp,
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [searchType, setSearchType] = useState<"simple" | "ai">("ai")
+  const [searchType, setSearchType] = useState<"simple" | "ai" | "agent">("agent")
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return
 
     if (searchType === "ai") {
       window.location.href = `/ai-search?q=${encodeURIComponent(searchQuery)}`
+    } else if (searchType === "agent") {
+      window.location.href = `/agent-search?q=${encodeURIComponent(searchQuery)}`
     } else {
-      window.location.href = `/library?search=${encodeURIComponent(searchQuery)}`
+      // For simple search, use agent search as fallback
+      window.location.href = `/agent-search?q=${encodeURIComponent(searchQuery)}`
     }
   }
 
@@ -28,19 +31,19 @@ export default function HomePage() {
       color: "from-purple-500 to-pink-500",
     },
     {
-      icon: Search,
-      title: "Smart Search & Filters",
-      description: "Find the perfect resources with advanced filtering and intelligent search",
+      icon: Zap,
+      title: "Agent Search",
+      description: "Find GitHub repositories using Google search with smart query processing",
       color: "from-blue-500 to-cyan-500",
     },
     {
-      icon: Code,
-      title: "500+ Curated Resources",
-      description: "Hand-picked libraries, frameworks, and tools for modern development",
+      icon: Search,
+      title: "Smart Discovery",
+      description: "Discover curated repositories and projects that match your needs",
       color: "from-green-500 to-emerald-500",
     },
     {
-      icon: Zap,
+      icon: Code,
       title: "Build Faster",
       description: "Accelerate your development with battle-tested solutions",
       color: "from-orange-500 to-red-500",
@@ -48,15 +51,15 @@ export default function HomePage() {
   ]
 
   const popularCategories = [
-    { name: "Frameworks", count: 45, icon: Palette },
-    { name: "UI Libraries", count: 78, icon: Code },
-    { name: "Backend Tools", count: 32, icon: Database },
-    { name: "AI & ML", count: 24, icon: Sparkles },
+    { name: "Chatbots & AI", count: 45, icon: Sparkles },
+    { name: "Finance Apps", count: 32, icon: TrendingUp },
+    { name: "E-commerce", count: 28, icon: Database },
+    { name: "Social Platforms", count: 24, icon: Users },
   ]
 
   const stats = [
-    { label: "Total Resources", value: "500+", icon: TrendingUp },
-    { label: "Active Users", value: "1.2K+", icon: Users },
+    { label: "GitHub Repositories", value: "1M+", icon: Code },
+    { label: "Search Queries", value: "10K+", icon: Search },
     { label: "Success Rate", value: "98%", icon: Star },
   ]
 
@@ -77,7 +80,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-2xl text-gray-400 mb-16 max-w-3xl mx-auto leading-relaxed font-light">
-            Get AI-powered tech recommendations and discover 500+ curated development resources
+            Discover GitHub repositories with AI-powered search, agent discovery, and smart recommendations
           </p>
 
           {/* Main Search Interface */}
@@ -89,25 +92,36 @@ export default function HomePage() {
                   {/* Search Type Toggles - Inside the input */}
                   <div className="flex items-center space-x-1 w-full md:w-auto pl-4 pr-2 mb-2 md:mb-0">
                     <button
+                      onClick={() => setSearchType("agent")}
+                      className={`px-2 md:px-3 py-2 rounded-2xl text-xs md:text-sm font-medium transition-all flex items-center flex-1 md:flex-none justify-center ${
+                        searchType === "agent"
+                          ? "bg-purple-500 text-white shadow-lg"
+                          : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+                      }`}
+                    >
+                      <Zap className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                      Agent
+                    </button>
+                    <button
                       onClick={() => setSearchType("ai")}
-                      className={`px-3 md:px-4 py-2 rounded-2xl text-xs md:text-sm font-medium transition-all flex items-center flex-1 md:flex-none justify-center ${
+                      className={`px-2 md:px-3 py-2 rounded-2xl text-xs md:text-sm font-medium transition-all flex items-center flex-1 md:flex-none justify-center ${
                         searchType === "ai"
                           ? "bg-blue-500 text-white shadow-lg"
                           : "text-gray-400 hover:text-white hover:bg-gray-700/50"
                       }`}
                     >
-                      <Sparkles className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-1.5" />
+                      <Sparkles className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       AI
                     </button>
                     <button
                       onClick={() => setSearchType("simple")}
-                      className={`px-3 md:px-4 py-2 rounded-2xl text-xs md:text-sm font-medium transition-all flex items-center flex-1 md:flex-none justify-center ${
+                      className={`px-2 md:px-3 py-2 rounded-2xl text-xs md:text-sm font-medium transition-all flex items-center flex-1 md:flex-none justify-center ${
                         searchType === "simple"
-                          ? "bg-blue-500 text-white shadow-lg"
+                          ? "bg-green-500 text-white shadow-lg"
                           : "text-gray-400 hover:text-white hover:bg-gray-700/50"
                       }`}
                     >
-                      <Search className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-1.5" />
+                      <Search className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       Search
                     </button>
                   </div>
@@ -120,7 +134,9 @@ export default function HomePage() {
                     <Input
                       type="text"
                       placeholder={
-                        searchType === "ai"
+                        searchType === "agent"
+                          ? "Describe your project: 'I want to build a personalized chatbot app...'"
+                          : searchType === "ai"
                           ? "Describe your project: 'I want to build a real-time dashboard with React...'"
                           : "Search frameworks, libraries, tools..."
                       }
@@ -146,7 +162,28 @@ export default function HomePage() {
 
               {/* Search Suggestions */}
               <div className="mt-4 md:mt-6 flex flex-wrap justify-center gap-2 md:gap-3">
-                {searchType === "ai" ? (
+                {searchType === "agent" ? (
+                  <>
+                    <button
+                      onClick={() => setSearchQuery("I want to build a personalized chatbot app")}
+                      className="px-3 md:px-4 py-2 bg-gray-800/40 border border-gray-700/50 rounded-full text-xs md:text-sm text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all"
+                    >
+                      Chatbot app
+                    </button>
+                    <button
+                      onClick={() => setSearchQuery("I need a finance tracking application")}
+                      className="px-3 md:px-4 py-2 bg-gray-800/40 border border-gray-700/50 rounded-full text-xs md:text-sm text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all"
+                    >
+                      Finance tracker
+                    </button>
+                    <button
+                      onClick={() => setSearchQuery("I want to create a social media platform")}
+                      className="px-3 md:px-4 py-2 bg-gray-800/40 border border-gray-700/50 rounded-full text-xs md:text-sm text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all"
+                    >
+                      Social platform
+                    </button>
+                  </>
+                ) : searchType === "ai" ? (
                   <>
                     <button
                       onClick={() => setSearchQuery("I want to build a modern e-commerce website")}
@@ -194,13 +231,17 @@ export default function HomePage() {
 
             {/* Search Description */}
             <p className="text-gray-500 mt-6 md:mt-8 text-base md:text-lg text-center">
-              {searchType === "ai" ? (
+              {searchType === "agent" ? (
+                <>
+                  <span className="text-purple-400">🤖 Agent search</span> finds GitHub repositories using Google search
+                </>
+              ) : searchType === "ai" ? (
                 <>
                   <span className="text-blue-400">✨ AI-powered</span> recommendations based on your project description
                 </>
               ) : (
                 <>
-                  <span className="text-blue-400">🔍 Instant search</span> through 500+ curated development resources
+                  <span className="text-green-400">🔍 Smart search</span> through GitHub repositories
                 </>
               )}
             </p>

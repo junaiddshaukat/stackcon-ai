@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/components/auth-provider'
 import { Button } from '@/components/ui/button'
-import { Menu, X, Library, Sparkles, User, LogOut, Code, Github, Twitter, Mail } from 'lucide-react'
+import { Menu, X, Library, Sparkles, User, LogOut, Code, Github, Twitter, Mail, Zap } from 'lucide-react'
 
 export default function Header() {
   const { user, signOut } = useAuth()
@@ -15,6 +15,7 @@ export default function Header() {
   const navigation = [
     { name: 'Library', href: '/library', icon: Library },
     { name: 'AI Search', href: '/ai-search', icon: Sparkles },
+    { name: 'Agent Search', href: '/agent-search', icon: Zap },
   ]
 
   // External links for Github and X (Twitter)
@@ -119,8 +120,15 @@ export default function Header() {
         </div>
       )}
 
-      <nav className={`fixed ${navTop} w-full z-50 glass-effect bg-gray-950 border-b border-white/10 transition-all`}>
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      {/* Floating, rounded header */}
+      <nav
+        className={`fixed left-1/2 transform -translate-x-1/2 ${navTop} z-50 glass-effect bg-gray-950 border border-white/10 transition-all rounded-2xl shadow-xl w-[95vw] max-w-4xl mx-auto`}
+        style={{
+          // Add a little margin from the top strip or top of page
+          marginTop: showJobStrip ? '12px' : '24px',
+        }}
+      >
+        <div className="px-4 py-3 md:px-8 md:py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-3 group">
@@ -181,14 +189,6 @@ export default function Header() {
                   </Button>
                 </div>
               ) : (
-                // <div className="flex items-center space-x-4">
-                //   <Button className="button-secondary text-white" size="sm" asChild>
-                //     <Link href="/auth/signin">Sign In</Link>
-                //   </Button>
-                //   <Button className="button-primary bg-white text-gray-900" size="sm" asChild>
-                //     <Link href="/auth/signup">Get Started</Link>
-                //   </Button>
-                // </div>
                 null
               )}
             </div>
@@ -213,7 +213,7 @@ export default function Header() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden glass-effect border-t border-white/10 px-6 pb-6 pt-4">
+          <div className="md:hidden glass-effect border-t border-white/10 px-4 pb-6 pt-4 rounded-b-2xl">
             <div className="flex flex-col space-y-4">
               {navigation.map((item) => (
                 <Link
@@ -275,18 +275,6 @@ export default function Header() {
                   </Button>
                 </div>
               ) : (
-                // <div className="flex flex-col space-y-3 pt-4 border-t border-gray-700/50">
-                //   <Button className="button-secondary w-full text-white" size="sm" asChild>
-                //     <Link href="/auth/signin" onClick={() => setMobileMenuOpen(false)}>
-                //       Sign In
-                //     </Link>
-                //   </Button>
-                //   <Button className="button-primary w-full text-white" size="sm" asChild>
-                //     <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)}>
-                //       Get Started
-                //     </Link>
-                //   </Button>
-                // </div>
                 null
               )}
             </div>
