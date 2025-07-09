@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import { EmbeddingRequest, EmbeddingResponse } from './types'
 
 // Initialize AI clients
-const openai = new OpenAI({
+export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 })
 

@@ -17,12 +17,18 @@ export async function POST(request: NextRequest) {
 
     // Use Google Search Agent to find repositories
     let results;
+    let searchQuery = '';
+    
     try {
+      // Try Google Search first
       results = await googleSearchAgent.searchGitHubRepositories(query);
+      searchQuery = await googleSearchAgent.queryAgent(query);
     } catch (error) {
       console.warn('Google Search failed, using fallback:', error);
-      // Fallback to alternative search method
+      
+      // Fallback to curated search method
       results = await googleSearchAgent.searchAlternative(query);
+      searchQuery = `Fallback search for: ${query}`;
     }
 
     console.log(`Agent Search found ${results.length} results`);
@@ -31,7 +37,8 @@ export async function POST(request: NextRequest) {
       success: true,
       data: results,
       count: results.length,
-      searchQuery: googleSearchAgent.queryAgent(query)
+      searchQuery: searchQuery,
+      isGoogleSearch: searchQuery.includes('site:github.com')
     });
 
   } catch (error) {
@@ -62,12 +69,18 @@ export async function GET(request: NextRequest) {
 
     // Use Google Search Agent to find repositories
     let results;
+    let searchQuery = '';
+    
     try {
+      // Try Google Search first
       results = await googleSearchAgent.searchGitHubRepositories(query);
+      searchQuery = await googleSearchAgent.queryAgent(query);
     } catch (error) {
       console.warn('Google Search failed, using fallback:', error);
-      // Fallback to alternative search method
+      
+      // Fallback to curated search method
       results = await googleSearchAgent.searchAlternative(query);
+      searchQuery = `Fallback search for: ${query}`;
     }
 
     console.log(`Agent Search found ${results.length} results`);
@@ -76,7 +89,8 @@ export async function GET(request: NextRequest) {
       success: true,
       data: results,
       count: results.length,
-      searchQuery: googleSearchAgent.queryAgent(query)
+      searchQuery: searchQuery,
+      isGoogleSearch: searchQuery.includes('site:github.com')
     });
 
   } catch (error) {

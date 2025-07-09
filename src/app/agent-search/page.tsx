@@ -74,55 +74,41 @@ function AgentSearchContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen  bg-gray-950 text-white">
       {/* Header */}
-      <div className="border-b border-gray-800 bg-gray-900/50 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/">
-                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Home
-                </Button>
-              </Link>
-              <div className="flex items-center space-x-2">
-                <Zap className="w-6 h-6 text-purple-400" />
-                <h1 className="text-xl font-semibold">Agent Search</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl  mx-auto px-6 py-8">
         {/* Search Form */}
-        <form onSubmit={handleSearch} className="mb-8">
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <Input
-                type="text"
-                placeholder="Describe your project: 'I want to build a personalized chatbot app...'"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 text-lg py-3"
-              />
-            </div>
-            <Button 
-              type="submit" 
-              disabled={loading || !query.trim()}
-              className="bg-purple-500 hover:bg-purple-600 px-8 py-3"
-            >
-              {loading ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-              ) : (
-                <Search className="w-4 h-4" />
-              )}
-            </Button>
-          </div>
-        </form>
+        
 
         {/* Search Info */}
+        <div className="flex justify-center items-center min-h-[40vh] mb-8">
+          <form onSubmit={handleSearch} className="w-full max-w-2xl">
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <Input
+                  type="text"
+                  placeholder="Describe your project: 'I want to build a personalized chatbot app...'"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 text-lg py-3"
+                />
+              </div>
+              <Button 
+                type="submit" 
+                disabled={loading || !query.trim()}
+                className="bg-purple-500 hover:bg-purple-600 px-8 py-3"
+              >
+                {loading ? (
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                ) : (
+                  <Search className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+          </form>
+        </div>
         {searchQuery && (
           <div className="mb-6 p-4 bg-gray-800/50 border border-gray-700 rounded-lg">
             <div className="flex items-center space-x-2 text-sm text-gray-400">
